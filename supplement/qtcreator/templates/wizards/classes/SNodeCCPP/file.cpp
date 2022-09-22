@@ -16,33 +16,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/Descriptor.h"
+#include "%{JS: Util.relativeFilePath('%{Path}/%{HdrFileName}', '%{Path}' + '/' + Util.path('%{SrcFileName}'))}"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include "core/system/unistd.h"
+#endif // DOXYGEN_SHOUÖD_SKIP_THIS
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+@if '%{NameSp}'
+namespace %{NameSp} {
+@endif
 
-namespace core {
+%{CN}::%{CN}() {
 
-    Descriptor::~Descriptor() {
-        if (autoClose && fd >= 0) {
-            core::system::close(fd);
-            fd = -1;
-        }
-    }
+}
 
-    int Descriptor::open(int fd) {
-        return this->fd = fd;
-    }
+%{CN}::~%{CN}() {
 
-    int Descriptor::getFd() const {
-        return fd;
-    }
-
-    void Descriptor::dontClose() {
-        autoClose = false;
-    }
-
-} // namespace core
+}
+%{JS: Cpp.closeNamespaces('%{Class}')}
+@if '%{NameSp}'
+} // %{NameSp}
+@endif

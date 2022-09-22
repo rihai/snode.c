@@ -34,7 +34,6 @@ namespace core {
         Descriptor& operator=(const Descriptor& descriptor) = delete;
 
         int open(int fd);
-        void close();
 
         int getFd() const;
 

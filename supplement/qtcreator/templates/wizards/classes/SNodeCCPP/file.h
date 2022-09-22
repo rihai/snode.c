@@ -16,33 +16,44 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/Descriptor.h"
+@if '%{Cpp:PragmaOnce}'
+#pragma once
+@else
+#ifndef %{GUARD}
+#define %{GUARD}
+@endif
 
+@if '%{Base}'
+#include "%{Base}.h"
+
+@endif
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include "core/system/unistd.h"
+#endif // DOXYGEN_SHOUÖD_SKIP_THIS
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+@if '%{NameSp}'
+namespace %{NameSp} {
+@endif
 
-namespace core {
+@if '%{Base}'
+class %{CN} : public %{Base}
+@else
+class %{CN}
+@endif
+{
+public:
+    %{CN}();
+    %{CN}(const %{CN} &) = default;
 
-    Descriptor::~Descriptor() {
-        if (autoClose && fd >= 0) {
-            core::system::close(fd);
-            fd = -1;
-        }
-    }
+    %{CN} &operator=(const %{CN} &) = default;
 
-    int Descriptor::open(int fd) {
-        return this->fd = fd;
-    }
+    ~%{CN}();
+};
+%{JS: Cpp.closeNamespaces('%{Class}')}
+@if '%{NameSp}'
+} // %{NameSp}
+@endif
 
-    int Descriptor::getFd() const {
-        return fd;
-    }
-
-    void Descriptor::dontClose() {
-        autoClose = false;
-    }
-
-} // namespace core
+@if ! '%{Cpp:PragmaOnce}'
+#endif // %{GUARD}
+@endif
